@@ -42,6 +42,10 @@ typedef struct JsonHttpResponse {
     if(self.version_label == nil) {
         self.version_label = NO_DEPLOY_LABEL;
     }
+    
+    // Cordova-iOS @4.x is posting the pluginResetNotification to a nil pointer instead of
+    // to our webview. This is a patch to catch that notification until the pointer is fixed.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReset) name:CDVPluginResetNotification object:nil];
     [self initVersionChecks];
 }
 
